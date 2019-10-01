@@ -23,22 +23,28 @@
         <label><input type="radio" name="radio" value="5" />Пилообразный</label>
         <button id="button" type="button" onclick="GetRequest()">Построить</button>
     </form>
-    <div style="width: 600px; height: 300px;">
-        <canvas id="myChart" width="300" height="300"></canvas>
+    <div style="width: 700px; height: 500px;" id="chart-container">
+        
     </div>
 
 
     <script src="~/js/Chart.js"></script>
 
     <script>
-            function updateTextInput(val) {
-                document.getElementById('textInput').value = val;
-                GetRequest();
-            }            
+        function updateTextInput(val) {
+            document.getElementById('textInput').value = val;
+            GetRequest();
+        }          
     
-        var ctx = document.getElementById('myChart').getContext('2d');
         function DrawChart(config) {
-            document.getElementById('myChart').innerHTML = '';
+            let chartContainer = document.getElementById('chart-container')
+            chartContainer.innerHTML = '';
+            let canvas = document.createElement('canvas');
+            chartContainer.appendChild(canvas);
+            canvas.id = 'myChart';
+            canvas.width = '700px';
+            canvas.height = '500px';
+            var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, config);    
         }
         function GetRequest() {
