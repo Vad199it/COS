@@ -40,10 +40,10 @@ namespace LaboratoryWork1.Controllers
         [HttpGet]
         public int[] AxisX(int N)
         {
-            int[] arr = new int[N];
+            int[] arr = new int[N*4];
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = i;
+                arr[i] = i/(4*N);
             }
             return arr;
         }

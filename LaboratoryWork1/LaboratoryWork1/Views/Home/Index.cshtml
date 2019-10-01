@@ -11,7 +11,7 @@
         <label>Частота<input type="number" name="frequency" value="" id="frequency" /></label>
         <label>
             N
-            <input id="range" type="range" name="n" min="10" max="65536" step="256" onchange="updateTextInput(this.value)" />
+            <input id="range" type="range" name="n" min="20" max="2048" step="256" onchange="updateTextInput(this.value)" />
             <input type="text" id="textInput" />
         </label>
         <label><input type="checkbox" name="noise" id="noise" />Шум</label>
@@ -54,8 +54,8 @@
                     labels: [],
                     datasets: [{
                         label: '',
-                        backgroundColor: "#FF0000",
-                        borderColor: "#FF0000",
+                        backgroundColor: "#FFF",
+                        borderColor: "#FFF",
                         borderWidth: 0,
                         pointBackgroundColor: "#FF0000",
                         pointBorderColor: "#FF0000",
@@ -67,7 +67,7 @@
                 options: {
                     elements: {
                         point: {
-                            radius: 0
+                            radius: 0.5
                         }
                     },
                     responsive: true,

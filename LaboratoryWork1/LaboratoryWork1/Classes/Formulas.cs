@@ -10,7 +10,7 @@ namespace LaboratoryWork1.Classes
     {
         public static double[] Harmonic(Formula formula)
         {
-            double[] values = new double[formula.N];
+            double[] values = new double[formula.N*4];
             Random rand = new Random();
             for (int i = 0; i < values.Length; i++)
             {
@@ -29,7 +29,7 @@ namespace LaboratoryWork1.Classes
 
         public static double[] Sinus(Formula formula)
         {
-            double[] values = new double[formula.N];
+            double[] values = new double[formula.N*4];
             Random rand = new Random();
             for (int i = 0; i < values.Length; i++)
             {
@@ -40,15 +40,14 @@ namespace LaboratoryWork1.Classes
                     if (i % 2 == 0)
                         y1 *= -1;
                 }
-                double sinus = Math.Sin(formula.Frequency * i + formula.InitialPhase);
-                values[i] = formula.Amplitude*Math.Sin(i);
+                values[i] = formula.Amplitude * Math.Sin(formula.Frequency * Math.PI * i / 180 + formula.InitialPhase);
             }
             return values;
         }
 
         public static double[] Square(Formula formula)
         {
-            double[] values = new double[formula.N];
+            double[] values = new double[formula.N*4];
             Random rand = new Random();
             for (int i = 0; i < values.Length; i++)
             {
@@ -60,14 +59,14 @@ namespace LaboratoryWork1.Classes
                         y1 *= -1;
                 }
 
-                values[i] = formula.Amplitude * Math.Sin(formula.Frequency * i + formula.InitialPhase) + y1;
+                values[i] = formula.Amplitude*(Math.Sin(2*Math.PI*formula.Frequency*i)/Math.PI);
             }
             return values;
         }
 
         public static double[] Triangle(Formula formula)
         {
-            double[] values = new double[formula.N];
+            double[] values = new double[formula.N*4];
             Random rand = new Random();
             for (int i = 0; i < values.Length; i++)
             {
@@ -79,14 +78,14 @@ namespace LaboratoryWork1.Classes
                         y1 *= -1;
                 }
 
-                values[i] = (2 * formula.Amplitude / Math.PI) * Math.Asin(Math.Sin(formula.N));
+                values[i] = (2 * formula.Amplitude / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase));
             }
             return values;
         }
 
         public static double[] Sowtooth(Formula formula)
         {
-            double[] values = new double[formula.N];
+            double[] values = new double[formula.N*4];
             Random rand = new Random();
             for (int i = 0; i < values.Length; i++)
             {
@@ -97,7 +96,7 @@ namespace LaboratoryWork1.Classes
                     if (i % 2 == 0)
                         y1 *= -1;
                 }
-                double tan = Math.Tan(formula.N / 2);
+                double tan = Math.Tan(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase);
                 if (tan != 0)
                 {
                     values[i] = (-2 * formula.Amplitude / Math.PI) * Math.Atan(1 / tan);
