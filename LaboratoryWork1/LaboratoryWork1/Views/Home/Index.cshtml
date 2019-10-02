@@ -6,21 +6,33 @@
 
 <div class="text-center" style="display: flex;">
     <form method="post" asp-controller="Home" asp-action="Index" id="form" style="display: flex; flex-direction: column; align-items: flex-start;">
-        <label>Амплитуда<input type="number" name="amplitude" value="" id="amplitude" /></label>
-        <label>Начальная фаза<input type="number" name="initialPhase" value="" id="initialphase" /></label>
-        <label>Частота<input type="number" name="frequency" value="" id="frequency" /></label>
+        <label>Амплитуда 1<input type="number" step="0.1" name="amplitude1" value="0.5" id="amplitude1" /></label>
+        <label>Амплитуда 2<input type="number" step="0.1" name="amplitude2" value="0.5" id="amplitude2" /></label>
+        <label>Амплитуда 3<input type="number" step="0.1" name="amplitude3" value="0.5" id="amplitude3" /></label>
+        <label>Амплитуда 4<input type="number" step="0.1" name="amplitude4" value="0.5" id="amplitude4" /></label>
+        <label>Начальная фаза<input type="number" step="0.1" name="initialPhase" value="0.2" id="initialphase" /></label>
+        <label>Частота 1<input type="number" step="0.1" name="frequency1" value="1" id="frequency1" /></label>
+        <label>Частота 2<input type="number" step="0.1" name="frequency2" value="1" id="frequency2" /></label>
+        <label>Частота 3<input type="number" step="0.1" name="frequency3" value="1" id="frequency3" /></label>
+        <label>Частота 4<input type="number" step="0.1" name="frequency4" value="1" id="frequency4" /></label>
         <label>
             N
-            <input id="range" type="range" name="n" min="20" max="2048" step="256" onchange="updateTextInput(this.value)" />
-            <input type="text" id="textInput" />
+            <input id="range" type="range" name="n" min="256" max="2048" step="256" value="256" onchange="updateTextInput(this.value)" />
+            <input type="text" id="textInput" value="256" />
         </label>
         <label><input type="checkbox" name="noise" id="noise" />Шум</label>
-        <label><input type="checkbox" name="polyharmonic" id="polyharmonic"/>Полигармонический</label>
-        <label><input type="radio" name="radio" value="1" checked />Гармонический</label>
-        <label><input type="radio" name="radio" value="2" />Синусоида</label>
+        <label><input type="checkbox" name="line" id="line" onchange="ShowHideLine()" />Линии</label>
+        <label><input type="radio" name="radio" value="1" checked />Синусоида</label>
         <label><input type="radio" name="radio" value="3" />Квадратичный</label>
         <label><input type="radio" name="radio" value="4" />Треугольный</label>
         <label><input type="radio" name="radio" value="5" />Пилообразный</label>
+        <label><input type="radio" name="radio" value="6" />Синусоида + Квадратичный</label>
+        <label><input type="radio" name="radio" value="7" />Квадратичный + Треугольный</label>
+        <label><input type="radio" name="radio" value="8" />Треугольный + Пилообразный</label>
+        <label><input type="radio" name="radio" value="9" />Пилообразный + Синусоида</label>
+        <label><input type="radio" name="radio" value="10" />Синусоида + Квадратичный + Треугольный</label>
+        <label><input type="radio" name="radio" value="11" />Квадратичный + Треугольный + Пилообразный</label>
+        <label><input type="radio" name="radio" value="12" />Все сразу</label>
         <button id="button" type="button" onclick="GetRequest()">Построить</button>
     </form>
     <div style="width: 700px; height: 500px;" id="chart-container">
@@ -31,24 +43,7 @@
     <script src="~/js/Chart.js"></script>
 
     <script>
-        function updateTextInput(val) {
-            document.getElementById('textInput').value = val;
-            GetRequest();
-        }          
-    
-        function DrawChart(config) {
-            let chartContainer = document.getElementById('chart-container')
-            chartContainer.innerHTML = '';
-            let canvas = document.createElement('canvas');
-            chartContainer.appendChild(canvas);
-            canvas.id = 'myChart';
-            canvas.width = '700px';
-            canvas.height = '500px';
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, config);    
-        }
-        function GetRequest() {
-            var config = {
+        var config = {
                 type: 'line',
                 data: {
                     labels: [],
@@ -88,10 +83,42 @@
                     }
                 }
             };
+        window.onload = () => GetRequest() ;
+        function updateTextInput(val) {
+            document.getElementById('textInput').value = val;
+            GetRequest();
+        }   
+
+        function ShowHideLine() {
+            if ($('#line').prop('checked')) {
+                config.data.datasets[0].backgroundColor = "#FF0000";
+                config.data.datasets[0].borderColor = "#FF0000";
+                GetRequest();
+            } else {
+                config.data.datasets[0].backgroundColor = "#FFF";
+                config.data.datasets[0].borderColor = "#FFF";
+                GetRequest();
+            }
+                
+
+        }
+    
+        function DrawChart(config) {
+            let chartContainer = document.getElementById('chart-container')
+            chartContainer.innerHTML = '';
+            let canvas = document.createElement('canvas');
+            chartContainer.appendChild(canvas);
+            canvas.id = 'myChart';
+            canvas.width = '700px';
+            canvas.height = '500px';
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, config);    
+        }
+        function GetRequest() {
             $.get("/Home/AxisX?n=" + $("#textInput").val(),
                 function (data) {                    
                     config.data.labels = data; 
-                    $.get("/Home/AxisY?amplitude=" + $("#amplitude").val() + "&initialPhase=" + $("#initialphase").val() + "&frequency=" + $("#frequency").val() + "&n=" + $("#textInput").val() + "&noise=" + $('#noise').prop('checked') + "&polyharmonic=" + $('#polyharmonic').prop('checked')+"&radiobutton="+$("#form input[type='radio']:checked").val(),
+                    $.get("/Home/AxisY?amplitude1=" + $("#amplitude1").val() + "amplitude2=" + $("#amplitude2").val() + "amplitude3=" + $("#amplitude3").val() + "amplitude4=" + $("#amplitude4").val() + "&initialPhase=" + $("#initialphase").val() + "&frequency1=" + $("#frequency1").val()  + "&frequency2=" + $("#frequency2").val() + "&frequency3=" + $("#frequency3").val() + "&frequency4=" + $("#frequency4").val() + "&n=" + $("#textInput").val() + "&noise=" + $('#noise').prop('checked') + "&line=" + $('#line').prop('checked')+"&radiobutton="+$("#form input[type='radio']:checked").val(),
                     function (data) {                    
                         config.data.datasets[0].data = data;
                         console.log(data);
