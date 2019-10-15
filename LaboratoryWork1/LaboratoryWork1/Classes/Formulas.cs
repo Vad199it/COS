@@ -12,6 +12,9 @@ namespace LaboratoryWork1.Classes
         {
             double[] values = new double[formula.N*4];
             Random rand = new Random();
+            double Amplitude = formula.Amplitude1;
+            double Frequency = formula.Frequency1;
+
             for (int i = 0; i < values.Length; i++)
             {
                 double y1 = 0;
@@ -21,8 +24,18 @@ namespace LaboratoryWork1.Classes
                     if (i % 2 == 0)
                         y1 *= -1;
                 }
+                
+                if (formula.Amplitudem) {
+                    Amplitude = Math.Sin((2 * Math.PI * formula.Frequency2 * i) / formula.N);
+                };
 
-                values[i] = formula.Amplitude1 * Math.Sin((2 * Math.PI * formula.Frequency1 * i) / formula.N + formula.InitialPhase) + y1;
+                
+                if (formula.Frequencym)
+                {
+                    Frequency = Math.Sin((2 * Math.PI * formula.Frequency2 * i) / formula.N);//formula.Frequency1 + formula.Frequency2 * i;
+                };
+
+                values[i] = Amplitude * Math.Sin((2 * Math.PI * Frequency * i) / formula.N + formula.InitialPhase) + y1;
             }
             return values;
         }
@@ -31,6 +44,9 @@ namespace LaboratoryWork1.Classes
         {
             double[] values = new double[formula.N*4];
             Random rand = new Random();
+
+            double Frequency = formula.Frequency1;
+
             for (int i = 1; i < values.Length; i++)
             {
                 double y1 = 0;
@@ -41,7 +57,19 @@ namespace LaboratoryWork1.Classes
                         y1 *= -1;
                 }
 
-                values[i] = formula.Amplitude1 * Math.Sign(formula.Amplitude1 * Math.Sin(2 * Math.PI * formula.Frequency1 * i / formula.N + formula.InitialPhase)) + y1;
+                double Amplitude = formula.Amplitude1;
+                if (formula.Amplitudem)
+                {
+                    Amplitude = (2 * formula.Amplitude2 / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency2 * 10 * i / values.Length + formula.InitialPhase));
+                };
+
+                
+                if (formula.Frequencym)
+                {
+                    Frequency = Frequency + 0.01;//(2 * formula.Amplitude2 / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency2 * i / values.Length + formula.InitialPhase)); //formula.Frequency1 + formula.Frequency2 * i;
+                };
+
+                values[i] = Amplitude * Math.Sign(Amplitude * Math.Sin(2 * Math.PI * Frequency * i / formula.N + formula.InitialPhase)) + y1;
             }
             return values;
         }
@@ -50,6 +78,7 @@ namespace LaboratoryWork1.Classes
         {
             double[] values = new double[formula.N*4];
             Random rand = new Random();
+            double Frequency = formula.Frequency1;
             for (int i = 0; i < values.Length; i++)
             {
                 double y1 = 0;
@@ -60,7 +89,19 @@ namespace LaboratoryWork1.Classes
                         y1 *= -1;
                 }
 
-                values[i] = y1 + (2 * formula.Amplitude1 / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency1 * i / values.Length + formula.InitialPhase));
+                double Amplitude = formula.Amplitude1;
+                if (formula.Amplitudem)
+                {
+                    Amplitude = formula.Amplitude2 * Math.Sign(formula.Amplitude2 * Math.Sin(2 * Math.PI * formula.Frequency2* 10* i / formula.N + formula.InitialPhase));
+                };
+
+                
+                if (formula.Frequencym)
+                {
+                    Frequency = Frequency + 0.01;//formula.Amplitude2 * Math.Sign(formula.Amplitude2 * Math.Sin(2 * Math.PI * formula.Frequency2 * i / formula.N + formula.InitialPhase)); //formula.Frequency1 + formula.Frequency2 * i;
+                };
+
+                values[i] = y1 + (2 * Amplitude / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * Frequency * i / values.Length + formula.InitialPhase));
             }
             return values;
         }
@@ -69,6 +110,7 @@ namespace LaboratoryWork1.Classes
         {
             double[] values = new double[formula.N*4];
             Random rand = new Random();
+            double Frequency = formula.Frequency1;
             for (int i = 0; i < values.Length; i++)
             {
                 double y1 = 0;
@@ -78,10 +120,23 @@ namespace LaboratoryWork1.Classes
                     if (i % 2 == 0)
                         y1 *= -1;
                 }
-                double tan = Math.Tan(2 * Math.PI * formula.Frequency1 * i / values.Length + formula.InitialPhase);
+
+                double Amplitude = formula.Amplitude1;
+                if (formula.Amplitudem)
+                {
+                    Amplitude = Math.Sin((2 * Math.PI * formula.Frequency2 * i) / formula.N);
+                };
+
+                
+                if (formula.Frequencym)
+                {
+                    Frequency = Frequency + 0.01;//formula.Amplitude2 * Math.Sin((2 * Math.PI * formula.Frequency2 * i) / formula.N + formula.InitialPhase);//formula.Frequency1 + formula.Frequency2 * i;
+                };
+
+                double tan = Math.Tan(2 * Math.PI * Frequency * i / values.Length + formula.InitialPhase);
                 if (tan != 0)
                 {
-                    values[i] = (-2 * formula.Amplitude1 / Math.PI) * Math.Atan(1 / tan) + y1;
+                    values[i] = (-2 * Amplitude / Math.PI) * Math.Atan(1 / tan) + y1;
                 }
                 else values[i] = 0;
             }
@@ -101,8 +156,8 @@ namespace LaboratoryWork1.Classes
                     if (i % 2 == 0)
                         y1 *= -1;
                 }
-
-                values[i] = formula.Amplitude * Math.Sin((2 * Math.PI * formula.Frequency * i) / formula.N + formula.InitialPhase) + y1 + formula.Amplitude * Math.Sign(formula.Amplitude * Math.Sin(2 * Math.PI * formula.Frequency * i / formula.N + formula.InitialPhase));
+               
+                values[i] = formula.Amplitude1 * Math.Sin((2 * Math.PI * formula.Frequency1 * i) / formula.N + formula.InitialPhase) + y1 + formula.Amplitude2 * Math.Sign(formula.Amplitude2 * Math.Sin(2 * Math.PI * formula.Frequency2 * i / formula.N + formula.InitialPhase));
             }
             return values;
         }
@@ -121,7 +176,7 @@ namespace LaboratoryWork1.Classes
                         y1 *= -1;
                 }
 
-                values[i] = formula.Amplitude * Math.Sign(formula.Amplitude * Math.Sin(2 * Math.PI * formula.Frequency * i / formula.N + formula.InitialPhase)) + y1 + (2 * formula.Amplitude / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase));
+                values[i] = formula.Amplitude1 * Math.Sign(formula.Amplitude1 * Math.Sin(2 * Math.PI * formula.Frequency1 * i / formula.N + formula.InitialPhase)) + y1 + (2 * formula.Amplitude2 / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency2 * i / values.Length + formula.InitialPhase));
             }
             return values;
         }
@@ -140,12 +195,12 @@ namespace LaboratoryWork1.Classes
                         y1 *= -1;
                 }
 
-                double tan = Math.Tan(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase);
+                double tan = Math.Tan(2 * Math.PI * formula.Frequency2 * i / values.Length + formula.InitialPhase);
                 if (tan != 0)
                 {
-                    values[i] = (-2 * formula.Amplitude / Math.PI) * Math.Atan(1 / tan) + y1 + (2 * formula.Amplitude / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase));
+                    values[i] = (-2 * formula.Amplitude2 / Math.PI) * Math.Atan(1 / tan) + y1 + (2 * formula.Amplitude2 / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency2 * i / values.Length + formula.InitialPhase));
                 }
-                else values[i] = (2 * formula.Amplitude / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase)) + y1;
+                else values[i] = (2 * formula.Amplitude1 / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency1 * i / values.Length + formula.InitialPhase)) + y1;
             }
             return values;
         }
@@ -164,12 +219,12 @@ namespace LaboratoryWork1.Classes
                         y1 *= -1;
                 }
 
-                double tan = Math.Tan(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase);
+                double tan = Math.Tan(2 * Math.PI * formula.Frequency1 * i / values.Length + formula.InitialPhase);
                 if (tan != 0)
                 {
-                    values[i] = (-2 * formula.Amplitude / Math.PI) * Math.Atan(1 / tan) + formula.Amplitude * Math.Sin((2 * Math.PI * formula.Frequency * i) / formula.N + formula.InitialPhase) + y1;
+                    values[i] = (-2 * formula.Amplitude1 / Math.PI) * Math.Atan(1 / tan) + formula.Amplitude2 * Math.Sin((2 * Math.PI * formula.Frequency2 * i) / formula.N + formula.InitialPhase) + y1;
                 }
-                else values[i] = formula.Amplitude * Math.Sin((2 * Math.PI * formula.Frequency * i) / formula.N + formula.InitialPhase) + y1;
+                else values[i] = formula.Amplitude2 * Math.Sin((2 * Math.PI * formula.Frequency2 * i) / formula.N + formula.InitialPhase) + y1;
             }
             return values;
         }
@@ -188,7 +243,7 @@ namespace LaboratoryWork1.Classes
                         y1 *= -1;
                 }
 
-                values[i] = formula.Amplitude * Math.Sin((2 * Math.PI * formula.Frequency * i) / formula.N + formula.InitialPhase) + y1 + formula.Amplitude * Math.Sign(formula.Amplitude * Math.Sin(2 * Math.PI * formula.Frequency * i / formula.N + formula.InitialPhase)) + (2 * formula.Amplitude / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase));
+                values[i] = formula.Amplitude1 * Math.Sin((2 * Math.PI * formula.Frequency1 * i) / formula.N + formula.InitialPhase) + y1 + formula.Amplitude2 * Math.Sign(formula.Amplitude2 * Math.Sin(2 * Math.PI * formula.Frequency2 * i / formula.N + formula.InitialPhase)) + (2 * formula.Amplitude3 / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency3 * i / values.Length + formula.InitialPhase));
             }
             return values;
         }
@@ -207,12 +262,12 @@ namespace LaboratoryWork1.Classes
                         y1 *= -1;
                 }
 
-                double tan = Math.Tan(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase);
+                double tan = Math.Tan(2 * Math.PI * formula.Frequency3 * i / values.Length + formula.InitialPhase);
                 if (tan != 0)
                 {
-                    values[i] = (-2 * formula.Amplitude / Math.PI) * Math.Atan(1 / tan) + formula.Amplitude * Math.Sign(formula.Amplitude * Math.Sin(2 * Math.PI * formula.Frequency * i / formula.N + formula.InitialPhase)) + y1 + (2 * formula.Amplitude / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase));
+                    values[i] = (-2 * formula.Amplitude3 / Math.PI) * Math.Atan(1 / tan) + formula.Amplitude1 * Math.Sign(formula.Amplitude1 * Math.Sin(2 * Math.PI * formula.Frequency1 * i / formula.N + formula.InitialPhase)) + y1 + (2 * formula.Amplitude2 / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency2 * i / values.Length + formula.InitialPhase));
                 }
-                else values[i] = formula.Amplitude * Math.Sign(formula.Amplitude * Math.Sin(2 * Math.PI * formula.Frequency * i / formula.N + formula.InitialPhase)) + y1 + (2 * formula.Amplitude / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase));
+                else values[i] = formula.Amplitude1 * Math.Sign(formula.Amplitude1 * Math.Sin(2 * Math.PI * formula.Frequency1 * i / formula.N + formula.InitialPhase)) + y1 + (2 * formula.Amplitude2 / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency2 * i / values.Length + formula.InitialPhase));
             }
             return values;
         }
@@ -231,12 +286,12 @@ namespace LaboratoryWork1.Classes
                         y1 *= -1;
                 }
 
-                double tan = Math.Tan(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase);
+                double tan = Math.Tan(2 * Math.PI * formula.Frequency4 * i / values.Length + formula.InitialPhase);
                 if (tan != 0)
                 {
-                    values[i] = formula.Amplitude * Math.Sin((2 * Math.PI * formula.Frequency * i) / formula.N + formula.InitialPhase)+(-2 * formula.Amplitude / Math.PI) * Math.Atan(1 / tan) + formula.Amplitude * Math.Sign(formula.Amplitude * Math.Sin(2 * Math.PI * formula.Frequency * i / formula.N + formula.InitialPhase)) + y1 + (2 * formula.Amplitude / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase));
+                    values[i] = formula.Amplitude1 * Math.Sin((2 * Math.PI * formula.Frequency1 * i) / formula.N + formula.InitialPhase)+(-2 * formula.Amplitude4 / Math.PI) * Math.Atan(1 / tan) + formula.Amplitude2 * Math.Sign(formula.Amplitude2 * Math.Sin(2 * Math.PI * formula.Frequency2 * i / formula.N + formula.InitialPhase)) + y1 + (2 * formula.Amplitude3 / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency3 * i / values.Length + formula.InitialPhase));
                 }
-                else values[i] = formula.Amplitude * Math.Sin((2 * Math.PI * formula.Frequency * i) / formula.N + formula.InitialPhase)+formula.Amplitude * Math.Sign(formula.Amplitude * Math.Sin(2 * Math.PI * formula.Frequency * i / formula.N + formula.InitialPhase)) + y1 + (2 * formula.Amplitude / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency * i / values.Length + formula.InitialPhase));
+                else values[i] = formula.Amplitude1 * Math.Sin((2 * Math.PI * formula.Frequency1 * i) / formula.N + formula.InitialPhase) + formula.Amplitude2 * Math.Sign(formula.Amplitude2 * Math.Sin(2 * Math.PI * formula.Frequency2 * i / formula.N + formula.InitialPhase)) + y1 + (2 * formula.Amplitude3 / Math.PI) * Math.Asin(Math.Sin(2 * Math.PI * formula.Frequency3 * i / values.Length + formula.InitialPhase));
 
             }
             return values;

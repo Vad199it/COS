@@ -55,7 +55,7 @@ namespace LaboratoryWork1.Controllers
             int[] arr = new int[N*4];
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = i/(4*N);
+                arr[i] = i;
             }
             return arr;
         }
