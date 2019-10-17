@@ -131,12 +131,21 @@
             var myChart = new Chart(ctx, config);    
         }
         function GetRequest() {
-            $.get("/Home/AxisX?n=" + $("#textInput").val(),
+            $.get("/Home/AxisX?n=" + $("#textInput").val() + "&m=" + $("#textInputM").val(),
                 function (data) {                    
                     config.data.labels = data; 
                     $.get("/Home/AxisY?amplitude1=" + $("#amplitude1").val() + "&amplitude2=" + $("#amplitude2").val() + "&amplitude3=" + $("#amplitude3").val() + "&amplitude4=" + $("#amplitude4").val() + "&initialPhase=" + $("#initialphase").val() + "&frequency1=" + $("#frequency1").val()  + "&frequency2=" + $("#frequency2").val() + "&frequency3=" + $("#frequency3").val() + "&frequency4=" + $("#frequency4").val() + "&n=" + $("#textInput").val() + "&m=" + $("#textInputM").val() + "&noise=" + $('#noise').prop('checked') + "&frequencym=" + $('#frequencym').prop('checked') + "&amplitudem=" + $('#amplitudem').prop('checked') + "&line=" + $('#line').prop('checked')+"&radiobutton="+$("#form input[type='radio']:checked").val(),
-                    function (data) {                    
-                        config.data.datasets[0].data = data;
+                        function (data) { 
+                            let data1 = data.splice(0, data.length / 3);
+                            let data2 = data.splice(0, data.length / 3);
+                            let data3 = data.splice(0 ,data.length / 3);
+                            
+                            config.data.datasets.push(config.data.datasets[0]);
+                            config.data.datasets.push(config.data.datasets[0]);
+
+                            config.data.datasets[0].data = data1;
+                            config.data.datasets[1].data = data2;
+                            config.data.datasets[2].data = data3;
                         console.log(data);
                         DrawChart(config);
                     }

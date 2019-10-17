@@ -10,12 +10,36 @@ namespace LaboratoryWork1.Classes
     {
         public static double[] Harmonic(Formula formula)
         {
-            double[] values = new double[formula.N*4];
-            Random rand = new Random();
+            double[] valueX = new double[formula.N * 2];
+            double[] value1y = new double[formula.N * 2];
+            double[] value2y = new double[formula.N * 2];
+            double[] value3y = new double[formula.N * 2];
+            double t = 0;
+            for (int M = formula.M; M <= 2 * formula.N - 1; M++)
+            {
+                double A = 0;
+                double rms_1 = 0, rms_2 = 0;
+                double sin = 0;
+                double cos = 0;
+                for (int n = 1; n <= M; n++)
+                {
+                    t = Math.Sin(2 * Math.PI * n / formula.N + formula.InitialPhase);
+                    rms_1 += Math.Pow(t, 2);
+                    rms_2 += t;
+                    sin += t * Math.Sin(2 * Math.PI * n / M);
+                    cos += t * Math.Cos(2 * Math.PI * n / M);
+                }
+                A = Math.Sqrt(Math.Pow(2 * sin / M, 2) + Math.Pow(2 * cos / M, 2));
+                value1y[M] = 0.707 - Math.Sqrt(rms_1 / (M + 1));
+                value2y[M] = 0.707 - (Math.Sqrt(rms_1 / (M + 1) - Math.Pow(rms_2 / (M + 1), 2)));
+                value3y[M] = 1 - A;
+                           
+            }
+            /*Random rand = new Random();
             double Amplitude = formula.Amplitude1;
-            double Frequency = formula.Frequency1;
+            double Frequency = formula.Frequency1;*/
 
-            for (int i = 0; i < values.Length; i++)
+            /* for (int i = 0; i < values.Length; i++)
             {
                 double y1 = 0;
                 if (formula.Noise)
@@ -36,8 +60,17 @@ namespace LaboratoryWork1.Classes
                 };
 
                 values[i] = Amplitude * Math.Sin((2 * Math.PI * Frequency * i) / formula.N + formula.InitialPhase) + y1;
+            }*/
+            var temp = new double[value1y.Length * 3];
+            
+            for(int i = 0; i < value1y.Length; i++)
+            {
+                temp[i] = value1y[i];
+                temp[value1y.Length + i] = value2y[i];
+                temp[value1y.Length * 2 + i] = value3y[i];
             }
-            return values;
+           
+            return temp;
         }
 
         public static double[] Square(Formula formula)
