@@ -17,6 +17,7 @@ namespace LaboratoryWork1.ViewModels
         public double Amplitude3 { get; set; }
         public double Amplitude4 { get; set; }
         public int N { get; set; }
+        public int M { get; set; }
         public bool Noise { get; set; }
         public bool Line { get; set; }
         public int RadioButton { get; set; }

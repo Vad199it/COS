@@ -21,6 +21,11 @@
                 <input id="range" type="range" name="n" min="256" max="20480" step="256" value="256" onchange="updateTextInput(this.value)" />
                 <input type="text" id="textInput" value="256" onchange="GetRequest()" style="width: 70px" />
             </label>
+            <label>
+                M
+                <input id="rangeM" type="range" name="m" min="10" max="1024" step="10" value="10" onchange="updateTextInputM(this.value)" />
+                <input type="text" id="textInputM" value="10" onchange="GetRequest()" style="width: 70px" />
+            </label>
             <label><input type="checkbox" name="noise" id="noise" onchange="GetRequest()" />Шум</label>
             <label><input type="checkbox" name="line" id="line" onchange="ShowHideLine()" />Линии</label>
             <label><input type="checkbox" name="frequencym" id="frequencym" onchange="GetRequest()" />Частотная модуляция</label>
@@ -93,7 +98,12 @@
         function updateTextInput(val) {
             document.getElementById('textInput').value = val;
             GetRequest();
-        }   
+        } 
+
+        function updateTextInputM(val) {
+            document.getElementById('textInputM').value = val;
+            GetRequest();
+        }
 
         function ShowHideLine() {
             if ($('#line').prop('checked')) {
@@ -124,7 +134,7 @@
             $.get("/Home/AxisX?n=" + $("#textInput").val(),
                 function (data) {                    
                     config.data.labels = data; 
-                    $.get("/Home/AxisY?amplitude1=" + $("#amplitude1").val() + "&amplitude2=" + $("#amplitude2").val() + "&amplitude3=" + $("#amplitude3").val() + "&amplitude4=" + $("#amplitude4").val() + "&initialPhase=" + $("#initialphase").val() + "&frequency1=" + $("#frequency1").val()  + "&frequency2=" + $("#frequency2").val() + "&frequency3=" + $("#frequency3").val() + "&frequency4=" + $("#frequency4").val() + "&n=" + $("#textInput").val() + "&noise=" + $('#noise').prop('checked') + "&frequencym=" + $('#frequencym').prop('checked') + "&amplitudem=" + $('#amplitudem').prop('checked') + "&line=" + $('#line').prop('checked')+"&radiobutton="+$("#form input[type='radio']:checked").val(),
+                    $.get("/Home/AxisY?amplitude1=" + $("#amplitude1").val() + "&amplitude2=" + $("#amplitude2").val() + "&amplitude3=" + $("#amplitude3").val() + "&amplitude4=" + $("#amplitude4").val() + "&initialPhase=" + $("#initialphase").val() + "&frequency1=" + $("#frequency1").val()  + "&frequency2=" + $("#frequency2").val() + "&frequency3=" + $("#frequency3").val() + "&frequency4=" + $("#frequency4").val() + "&n=" + $("#textInput").val() + "&m=" + $("#textInputM").val() + "&noise=" + $('#noise').prop('checked') + "&frequencym=" + $('#frequencym').prop('checked') + "&amplitudem=" + $('#amplitudem').prop('checked') + "&line=" + $('#line').prop('checked')+"&radiobutton="+$("#form input[type='radio']:checked").val(),
                     function (data) {                    
                         config.data.datasets[0].data = data;
                         console.log(data);
