@@ -10,7 +10,6 @@ namespace LaboratoryWork1.Classes
     {
         public static double[] Harmonic(Formula formula)
         {
-            double[] valueX = new double[formula.N * 2];
             double[] value1y = new double[formula.N * 2];
             double[] value2y = new double[formula.N * 2];
             double[] value3y = new double[formula.N * 2];

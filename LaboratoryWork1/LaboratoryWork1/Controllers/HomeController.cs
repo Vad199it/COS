@@ -55,7 +55,7 @@ namespace LaboratoryWork1.Controllers
             int[] arr = new int[N*2];
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = i;
+                arr[i] = i+20;
             }
             return arr;
         }
