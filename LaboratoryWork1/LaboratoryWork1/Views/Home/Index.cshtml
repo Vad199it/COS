@@ -54,26 +54,27 @@
     <script src="~/js/Chart.js"></script>
 
     <script>
+        var dataset = {
+            label: '',
+            backgroundColor: "#FF0000",
+            borderColor: "#FF0000",
+            borderWidth: 0,
+            pointBackgroundColor: "#FF0000",
+            pointBorderColor: "#FF0000",
+            lineTension: 0,
+            fill: false,
+            data: []
+        }
         var config = {
                 type: 'line',
                 data: {
                     labels: [],
-                    datasets: [{
-                        label: '',
-                        backgroundColor: "#FFF",
-                        borderColor: "#FFF",
-                        borderWidth: 0,
-                        pointBackgroundColor: "#FF0000",
-                        pointBorderColor: "#FF0000",
-                        lineTension: 0,
-                        fill: false,
-                        data: []
-                    }]
+                    datasets: []
                 },
                 options: {
                     elements: {
                         point: {
-                            radius: 0.5
+                            radius: 0
                         }
                     },
                     responsive: true,
@@ -136,17 +137,29 @@
                     config.data.labels = data; 
                     $.get("/Home/AxisY?amplitude1=" + $("#amplitude1").val() + "&amplitude2=" + $("#amplitude2").val() + "&amplitude3=" + $("#amplitude3").val() + "&amplitude4=" + $("#amplitude4").val() + "&initialPhase=" + $("#initialphase").val() + "&frequency1=" + $("#frequency1").val()  + "&frequency2=" + $("#frequency2").val() + "&frequency3=" + $("#frequency3").val() + "&frequency4=" + $("#frequency4").val() + "&n=" + $("#textInput").val() + "&m=" + $("#textInputM").val() + "&noise=" + $('#noise').prop('checked') + "&frequencym=" + $('#frequencym').prop('checked') + "&amplitudem=" + $('#amplitudem').prop('checked') + "&line=" + $('#line').prop('checked')+"&radiobutton="+$("#form input[type='radio']:checked").val(),
                         function (data) { 
+                            config.data.datasets = [];
                             let data1 = data.splice(0, data.length / 3);
                             let data2 = data.splice(0, data.length / 3);
                             let data3 = data.splice(0 ,data.length / 3);
                             
-                            config.data.datasets.push(config.data.datasets[0]);
-                            config.data.datasets.push(config.data.datasets[0]);
+                            config.data.datasets.push(Object.assign({}, dataset));
+                            config.data.datasets.push(Object.assign({}, dataset));
+                            config.data.datasets.push(Object.assign({}, dataset));
 
                             config.data.datasets[0].data = data1;
                             config.data.datasets[1].data = data2;
                             config.data.datasets[2].data = data3;
-                        console.log(data);
+                            
+                            config.data.datasets[1].backgroundColor = "#3383FF";
+                            config.data.datasets[1].borderColor = "#3383FF";
+                            config.data.datasets[1].pointBackgroundColor = "#3383FF";
+                            config.data.datasets[1].pointBorderColor = "#3383FF";
+                            
+                            config.data.datasets[2].backgroundColor = "#18AB35";
+                            config.data.datasets[2].borderColor = "#18AB35";
+                            config.data.datasets[1].pointBackgroundColor = "#18AB35";
+                            config.data.datasets[1].pointBorderColor = "#18AB35";
+                        console.log(config.data);
                         DrawChart(config);
                     }
                     );                    
