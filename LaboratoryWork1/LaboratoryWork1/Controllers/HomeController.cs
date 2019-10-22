@@ -53,7 +53,7 @@ namespace LaboratoryWork1.Controllers
         public int[] AxisX(int N, int M)
         {
             int[] arr = new int[N*2];
-            for (int i = M; i < arr.Length; i++)
+            for (int i = 0; i < arr.Length; i++)
             {
                 arr[i] = i;
             }
