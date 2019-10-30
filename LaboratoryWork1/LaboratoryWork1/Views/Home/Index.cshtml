@@ -20,10 +20,9 @@
                 <label><input type="checkbox" name="frequencym" id="frequencym" onchange="GetRequest()" />Частотная модуляция</label>
                 <label><input type="checkbox" name="amplitudem" id="amplitudem" onchange="GetRequest()" />Амплитудная модуляция</label>
                 <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                    <label><input type="radio" name="radio" value="1" checked onchange="GetRequest()" />Синусоида</label>
+                    
                     <label><input type="radio" name="radio" value="3" onchange="GetRequest()" />Квадратичный</label>
                     <label><input type="radio" name="radio" value="4" onchange="GetRequest()" />Треугольный</label>
-                    <label><input type="radio" name="radio" value="5" onchange="GetRequest()" />Пилообразный</label>
                     <label><input type="radio" name="radio" value="6" onchange="GetRequest()" />Синусоида + Квадратичный</label>
                     <label><input type="radio" name="radio" value="7" onchange="GetRequest()" />Квадратичный + Треугольный</label>
                     <label><input type="radio" name="radio" value="8" onchange="GetRequest()" />Треугольный + Пилообразный</label>
@@ -36,7 +35,7 @@
                 <label>Начальная фаза<input type="number" step="0.1" name="initialPhase" value="0.2" id="initialphase" onchange="GetRequest()" style="width: 70px" /></label>
                 <label>
                     N
-                    <input id="range" type="range" name="n" min="256" max="20480" step="256" value="256" onchange="updateTextInput(this.value)" />
+                    <input id="range" type="range" name="n" min="256" max="2048" step="256" value="256" onchange="updateTextInput(this.value)" />
                     <input type="text" id="textInput" value="256" onchange="GetRequest()" style="width: 70px" />
                 </label>
                 <label>
@@ -44,6 +43,8 @@
                     <input id="rangeM" type="range" name="m" min="0" max="1024" step="10" value="0" onchange="updateTextInputM(this.value)" />
                     <input type="text" id="textInputM" value="0" onchange="GetRequest()" style="width: 70px" />
                 </label>
+                <label><input type="radio" name="radio" value="1" checked onchange="GetRequest()" />Синусоида</label>
+                <label><input type="radio" name="radio" value="5" onchange="GetRequest()" />Пилообразный</label>
            </form>
             <div style="width: 700px; height: 500px;" id="chart-container"></div>
     <script src="~/js/Chart.js"></script>
@@ -110,9 +111,7 @@
                 config.data.datasets[0].backgroundColor = "#FFF";
                 config.data.datasets[0].borderColor = "#FFF";
                 GetRequest();
-            }
-                
-
+            }              
         }
     
         function DrawChart(config) {
@@ -126,36 +125,37 @@
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, config);    
         }
+
         function GetRequest() {
             $.get("/Home/AxisX?n=" + $("#textInput").val() + "&m=" + $("#textInputM").val(),
                 function (data) {                    
-                    config.data.labels = data; 
+                    config.data.labels = data.splice(0, data.length - $("#textInputM").val()); 
                     console.log(data);
                     $.get("/Home/AxisY?amplitude1=" + $("#amplitude1").val() + "&amplitude2=" + $("#amplitude2").val() + "&amplitude3=" + $("#amplitude3").val() + "&amplitude4=" + $("#amplitude4").val() + "&initialPhase=" + $("#initialphase").val() + "&frequency1=" + $("#frequency1").val()  + "&frequency2=" + $("#frequency2").val() + "&frequency3=" + $("#frequency3").val() + "&frequency4=" + $("#frequency4").val() + "&n=" + $("#textInput").val() + "&m=" + $("#textInputM").val() + "&noise=" + $('#noise').prop('checked') + "&frequencym=" + $('#frequencym').prop('checked') + "&amplitudem=" + $('#amplitudem').prop('checked') + "&line=" + $('#line').prop('checked')+"&radiobutton="+$("#form input[type='radio']:checked").val(),
                         function (data) {
                             console.log(data);
                             config.data.datasets = [];
-                            let data1 = data.splice(0, data.length / 3);
-                            let data2 = data.splice(0, data.length / 2);
+                            let data1 = data.splice($("#textInputM").val(), data.length / 3);
+                            let data2 = data.splice($("#textInputM").val(), data.length / 2);
                             
                             
                             config.data.datasets.push(Object.assign({}, dataset));
                             config.data.datasets.push(Object.assign({}, dataset));
                             config.data.datasets.push(Object.assign({}, dataset));
 
+                            config.data.datasets[0].label = 'SKZ1';
                             config.data.datasets[0].data = data1;
                             config.data.datasets[1].data = data2;
-                            config.data.datasets[2].data = data;
+                            config.data.datasets[2].data = data.splice($("#textInputM").val(), data.length);
                             
                             config.data.datasets[1].backgroundColor = "#3383FF";
                             config.data.datasets[1].borderColor = "#3383FF";
-                            config.data.datasets[1].pointBackgroundColor = "#3383FF";
-                            config.data.datasets[1].pointBorderColor = "#3383FF";
+                            config.data.datasets[1].label = 'SKZ2';
                             
                             config.data.datasets[2].backgroundColor = "#18AB35";
                             config.data.datasets[2].borderColor = "#18AB35";
-                            config.data.datasets[1].pointBackgroundColor = "#18AB35";
-                            config.data.datasets[1].pointBorderColor = "#18AB35";
+                            config.data.datasets[2].label = 'Amplitude';
+
                         DrawChart(config);
                     }
                     );                    

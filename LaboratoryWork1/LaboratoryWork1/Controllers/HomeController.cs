@@ -52,10 +52,10 @@ namespace LaboratoryWork1.Controllers
         [HttpGet]
         public int[] AxisX(int N, int M)
         {
-            int[] arr = new int[N*2];
+            int[] arr = new int[N*10];
             for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = i+20;
+                arr[i] = i + M;
             }
             return arr;
         }
