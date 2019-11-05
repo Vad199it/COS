@@ -19,40 +19,14 @@ namespace LaboratoryWork1.Controllers
 
         [HttpGet]
         public double[] AxisY(Formula formula)
-        {
-            switch (formula.RadioButton)
-            {
-                case 1:
-                    return Formulas.Harmonic(formula);
-                case 3:
-                    return Formulas.Square(formula);
-                case 4:
-                    return Formulas.Triangle(formula);
-                case 5:
-                    return Formulas.Sowtooth(formula);
-                case 6:
-                    return Formulas.HarmonicSquare(formula);
-                case 7:
-                    return Formulas.SquareTriangle(formula);
-                case 8:
-                    return Formulas.TriangleSowtooth(formula);
-                case 9:
-                    return Formulas.SowtoothHarmonic(formula);
-                case 10:
-                    return Formulas.HarmonicSquareTriangle(formula);
-                case 11:
-                    return Formulas.SquareTriangleSowtooth(formula);
-                case 12:
-                    return Formulas.All(formula);
-                default:
-                    return Formulas.Harmonic(formula);
-            }
+        {            
+            return Formulas.Harmonic(formula);            
         }
 
         [HttpGet]
         public int[] AxisX(int N, int M)
         {
-            int[] arr = new int[N*10];
+            int[] arr = new int[N];
             for (int i = 0; i < arr.Length; i++)
             {
                 arr[i] = i + M;
