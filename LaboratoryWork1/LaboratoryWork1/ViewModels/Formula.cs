@@ -21,7 +21,7 @@ namespace LaboratoryWork1.ViewModels
         public bool Noise { get; set; }
         public bool Line { get; set; }
         public int RadioButton { get; set; }
-        public bool Frequencym { get; set; }
-        public bool Amplitudem { get; set; }
+        public bool LowFrequency { get; set; }
+        public bool HighFrequency { get; set; }
     }
 }
