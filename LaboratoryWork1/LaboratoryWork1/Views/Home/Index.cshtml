@@ -52,23 +52,13 @@
             <div style="width: 700px; height: 500px;" id="chart-container-2"></div>
             <div style="width: 700px; height: 500px;" id="chart-container-3"></div>
             <div style="width: 700px; height: 500px;" id="chart-container-4"></div>
+            <div style="width: 700px; height: 500px;" id="chart-container-5"></div>
         </div>
         
         <script src="~/js/Chart.js"></script>
 
         <script>
-            var dataset = {
-                label: '',
-                backgroundColor: "#FF0000",
-                borderColor: "#FF0000",
-                borderWidth: 0,
-                pointBackgroundColor: "#FF0000",
-                pointBorderColor: "#FF0000",
-                lineTension: 0,
-                fill: false,
-                data: []
-            }
-            var config1 = {
+            var config = {
                 type: 'line',
                 data: {
                     labels: [],
@@ -87,7 +77,7 @@
                 options: {
                     elements: {
                         point: {
-                            radius: 0
+                            radius: 0.5
                         }
                     },
                     responsive: true,
@@ -108,126 +98,12 @@
                     }
                 }
             };
-            var config2 = {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [{
-                label: '',
-                backgroundColor: "#FF0000",
-                borderColor: "#FF0000",
-                borderWidth: 0,
-                pointBackgroundColor: "#FF0000",
-                pointBorderColor: "#FF0000",
-                lineTension: 0,
-                fill: false,
-                data: []
-            }]
-                },
-                options: {
-                    elements: {
-                        point: {
-                            radius: 0
-                        }
-                    },
-                    responsive: true,
-                    title: {
-                        display: false,
-                        text: 'Chart'
-                    },
-                    scales: {
-                        xAxes: [{
-                            display: true,
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                stepSize: 1,
-                            },
-                            display: true,
-                        }]
-                    }
-                }
-            };
-            var config3 = {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [{
-                label: '',
-                backgroundColor: "#FF0000",
-                borderColor: "#FF0000",
-                borderWidth: 0,
-                pointBackgroundColor: "#FF0000",
-                pointBorderColor: "#FF0000",
-                lineTension: 0,
-                fill: false,
-                data: []
-            }]
-                },
-                options: {
-                    elements: {
-                        point: {
-                            radius: 0
-                        }
-                    },
-                    responsive: true,
-                    title: {
-                        display: false,
-                        text: 'Chart'
-                    },
-                    scales: {
-                        xAxes: [{
-                            display: true,
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                stepSize: 1,
-                            },
-                            display: true,
-                        }]
-                    }
-                }
-            };
-            var config4 = {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [{
-                label: '',
-                backgroundColor: "#FF0000",
-                borderColor: "#FF0000",
-                borderWidth: 0,
-                pointBackgroundColor: "#FF0000",
-                pointBorderColor: "#FF0000",
-                lineTension: 0,
-                fill: false,
-                data: []
-            }]
-                },
-                options: {
-                    elements: {
-                        point: {
-                            radius: 0
-                        }
-                    },
-                    responsive: true,
-                    title: {
-                        display: false,
-                        text: 'Chart'
-                    },
-                    scales: {
-                        xAxes: [{
-                            display: true,
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                stepSize: 1,
-                            },
-                            display: true,
-                        }]
-                    }
-                }
-            };
+            var config1 = JSON.parse(JSON.stringify(config));
+            var config2 = JSON.parse(JSON.stringify(config));
+            var config3 = JSON.parse(JSON.stringify(config));
+            var config4 = JSON.parse(JSON.stringify(config));
+            var config5 = JSON.parse(JSON.stringify(config));
+            
             window.onload = () => GetRequest();
             function updateTextInput(val) {
                 document.getElementById('textInput').value = val;
@@ -270,34 +146,26 @@
                         config2.data.labels = data;
                         config3.data.labels = data;
                         config4.data.labels = data;
+                        config5.data.labels = data;
                         $.get("/Home/AxisY?amplitude=" + $("#amplitude").val() + "&initialPhase=" + $("#initialphase").val() + "&frequency=" + $("#frequency").val() + "&n=" + $("#textInput").val() + "&radiobutton="+$("#form input[type='radio']:checked").val() + "&lowfrequency=" + $('#lowfrequency').prop('checked') + "&highfrequency=" + $('#highfrequency').prop('checked') + "&linefrequency=" + $('#linefrequency').prop('checked'),
                             function (data) {
                                 console.log(data);
-                                //let config1 = Object.assign({}, config);
-                                //let config2 = Object.assign({}, config);
-                                //let config3 = Object.assign({}, config);
-                                //let config4 = Object.assign({}, config);
 
-                                //config1.data.datasets = [];
-                                //config1.data.datasets.push(Object.assign({}, dataset));
                                 config1.data.datasets[0].data = data.item1;
 
-                                //config2.data.datasets = [];
-                                //config2.data.datasets.push(Object.assign({}, dataset));
                                 config2.data.datasets[0].data = data.item2;
 
-                                //config3.data.datasets = [];
-                                //config3.data.datasets.push(Object.assign({}, dataset));
                                 config3.data.datasets[0].data = data.item3;
 
-                                //config4.data.datasets = [];
-                                //config4.data.datasets.push(Object.assign({}, dataset));
                                 config4.data.datasets[0].data = data.item4;
+
+                                config5.data.datasets[0].data = data.item5;
                                 
                                 DrawChart(config1, 1);
                                 DrawChart(config2, 2);
                                 DrawChart(config3, 3);
                                 DrawChart(config4, 4);
+                                DrawChart(config5, 5);
                             }
                         );
                        

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LaboratoryWork1.ViewModels;
 
 namespace LaboratoryWork1.Classes
 {

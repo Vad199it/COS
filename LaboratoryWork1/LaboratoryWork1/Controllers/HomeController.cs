@@ -26,6 +26,12 @@ namespace LaboratoryWork1.Controllers
         public double[] _polyharmonicAmplitudeSpectrum;
         public double[] _polyharmonicPhaseSpectrum;
 
+        public double[] _polyharmonicSignal1;
+        public double[] _polyharmonicRecoveredSignal1;
+        public double[] _polyharmonicRecoveredSignalWithoutPhase1;
+        public double[] _polyharmonicAmplitudeSpectrum1;
+        public double[] _polyharmonicPhaseSpectrum1;
+
         public int[] _amplitudes = new[] { 1, 3, 5, 8, 10, 12, 16 };
         public double[] _phases = new[] { Math.PI / 6, Math.PI / 4, Math.PI / 3, Math.PI / 2, 3 * Math.PI / 4, Math.PI };
         public IActionResult Index()
@@ -34,7 +40,7 @@ namespace LaboratoryWork1.Controllers
         }
 
         [HttpGet]
-        public (double[], double[], double[], double[]) AxisY(Formula formula)
+        public (double[], double[], double[], double[], double[]) AxisY(Formula formula)
         {
             var hs = new HarmonicSignal(formula.Amplitude, formula.Frequency, formula.InitialPhase, formula.N);
             _signal = hs.signVal;
@@ -49,16 +55,34 @@ namespace LaboratoryWork1.Controllers
             _polyharmonicAmplitudeSpectrum = phs.amplSp;
             _polyharmonicPhaseSpectrum = phs.phaseSp;
 
+            var phs1 = new PolyharmonicSignal(_amplitudes, formula.Frequency, _phases, formula.N);
+            _polyharmonicSignal1 = phs1.signVal;
+
+            var values = new System.Numerics.Complex[_polyharmonicSignal1.Length];
+
+            for (var i = 0; i < values.Length; i++)
+            {
+                values[i] = new System.Numerics.Complex(_polyharmonicSignal1[i], 0);
+            }
+
+            var spectrum = FFT.fft(values);
+
+            _polyharmonicAmplitudeSpectrum1 = FFT.GetAmplitudeSpectrum(spectrum);
+            _polyharmonicPhaseSpectrum1 = FFT.GetPhasesSpectrum(spectrum);
+
+            _polyharmonicRecoveredSignal1 = FFT.RestoreSignal(spectrum);
+            _polyharmonicRecoveredSignalWithoutPhase1 = FFT.RestoreNFSignal(spectrum);
+
             switch (formula.RadioButton)
             {
                 case 1:
-                    return (_signal, _amplitudeSpectrum, _phaseSpectrum, _recoveredSignal);
+                    return (_signal, _amplitudeSpectrum, _phaseSpectrum, _recoveredSignal, _recoveredSignal);
                 case 2:
-                    return (_polyharmonicSignal, _polyharmonicAmplitudeSpectrum, _polyharmonicPhaseSpectrum, _polyharmonicRecoveredSignal);
+                    return (_polyharmonicSignal, _polyharmonicAmplitudeSpectrum, _polyharmonicPhaseSpectrum, _polyharmonicRecoveredSignal, _polyharmonicRecoveredSignalWithoutPhase);
                 case 3:
-                    return (_polyharmonicSignal, _polyharmonicAmplitudeSpectrum, _polyharmonicPhaseSpectrum, _polyharmonicRecoveredSignal);
+                    return (_polyharmonicSignal1, _polyharmonicAmplitudeSpectrum1, _polyharmonicPhaseSpectrum1, _polyharmonicRecoveredSignal1, _polyharmonicRecoveredSignal1);
                 default:
-                    return (_signal, _amplitudeSpectrum, _phaseSpectrum, _recoveredSignal);
+                    return (_signal, _amplitudeSpectrum, _phaseSpectrum, _recoveredSignal, _recoveredSignal);
             }
                                    
         }

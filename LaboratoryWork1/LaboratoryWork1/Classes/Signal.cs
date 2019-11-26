@@ -70,7 +70,22 @@ namespace LaboratoryWork1.Classes
             for (int j = 0; j <= numHarm - 1; j++)
             {
                 values[j] = Math.Sqrt(Math.Pow(sineSp[j], 2) + Math.Pow(cosineSp[j], 2));
+                //if (val > 0 && val <= 5)
+                //    values[i] = val;
+                //else values[i] = 5;
+                //if (values[j] < 5 || values[j] > 8)
+                //{
+                //    if (values[j] < 5) values[j] = 4.9;
+                //    if (values[j] > 8) values[j] = 8;
+                //}
+                if (values[j] < 8 || values[j] > 150)
+                {
+                    if (values[j] < 8) values[j] = 8;
+                    if (values[j] > 150) values[j] = 150;
+                }
+
             }
+            
             return values;
         }
 
@@ -112,21 +127,6 @@ namespace LaboratoryWork1.Classes
                 values[i] = val;
             }
             return values;
-        }
-
-        internal double[] LowFilter()
-        {
-            return RestoreSignal(0, 30);
-        }
-
-        internal double[] HighFilter()
-        {
-            return RestoreSignal(70, 100);
-        }
-
-        internal double[] BandpassFilter()
-        {
-            return RestoreSignal(30, 70);
         }
     }
 }
