@@ -42,20 +42,20 @@ namespace LaboratoryWork1.Controllers
         [HttpGet]
         public (double[], double[], double[], double[], double[]) AxisY(Formula formula)
         {
-            var hs = new HarmonicSignal(formula.Amplitude, formula.Frequency, formula.InitialPhase, formula.N);
+            var hs = new HarmonicSignal(formula.Amplitude, formula.Frequency, formula.InitialPhase, formula.N, formula.LowFrequency, formula.HighFrequency, formula.LineFrequency, formula.RangeHighEdge, formula.RangeLowEdge);
             _signal = hs.signVal;
             _recoveredSignal = hs.restoredSignal;
             _amplitudeSpectrum = hs.amplSp;
             _phaseSpectrum = hs.phaseSp;
 
-            var phs = new PolyharmonicSignal(_amplitudes, formula.Frequency, _phases, formula.N);
+            var phs = new PolyharmonicSignal(_amplitudes, formula.Frequency, _phases, formula.N, formula.LowFrequency, formula.HighFrequency, formula.LineFrequency, formula.RangeHighEdge, formula.RangeLowEdge);
             _polyharmonicSignal = phs.signVal;
             _polyharmonicRecoveredSignal = phs.restoredSignal;
             _polyharmonicRecoveredSignalWithoutPhase = phs.restorednonphasedSignal;
             _polyharmonicAmplitudeSpectrum = phs.amplSp;
             _polyharmonicPhaseSpectrum = phs.phaseSp;
 
-            var phs1 = new PolyharmonicSignal(_amplitudes, formula.Frequency, _phases, formula.N);
+            var phs1 = new PolyharmonicSignal(_amplitudes, formula.Frequency, _phases, formula.N, formula.LowFrequency, formula.HighFrequency, formula.LineFrequency, formula.RangeHighEdge, formula.RangeLowEdge);
             _polyharmonicSignal1 = phs1.signVal;
 
             var values = new System.Numerics.Complex[_polyharmonicSignal1.Length];

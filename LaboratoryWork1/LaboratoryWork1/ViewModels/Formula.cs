@@ -18,5 +18,7 @@ namespace LaboratoryWork1.ViewModels
         public bool LowFrequency { get; set; }
         public bool HighFrequency { get; set; }
         public bool LineFrequency { get; set; }
+        public int RangeHighEdge { get; set; }
+        public int RangeLowEdge { get; set; }
     }
 }

@@ -13,12 +13,19 @@ namespace LaboratoryWork1.Classes
         internal double[] sineSp, cosineSp;
         internal double[] amplSp, phaseSp;
         internal int numHarm = 100;
-        public Signal()
+        bool low, high, line;
+        int highE, lowE;
+        public Signal(bool lowFr, bool highFr, bool lineFr, int highEdge, int lowEdge)
         {
+            low = lowFr;
+            high = highFr;
+            line = lineFr;
+            highE = highEdge;
+            lowE = lowEdge;
             signal = GenerateSignal();
             sineSp = GetSineSpectrum();
             cosineSp = GetCosineSpectrum();
-            amplSp = GetAmplSpectrum();
+            amplSp = GetAmplSpectrum(low, high, line, highE, lowE);
             phaseSp = GetPhaseSpectrum();
             restSignal = RestoreSignal(0, numHarm);
             nfSignal = RestoreNFSignal();
@@ -64,26 +71,34 @@ namespace LaboratoryWork1.Classes
             return values;
         }
 
-        internal double[] GetAmplSpectrum()
+        internal double[] GetAmplSpectrum(bool low, bool high, bool line, int highEdge, int lowEdge)
         {
             double[] values = new double[numHarm];
             for (int j = 0; j <= numHarm - 1; j++)
             {
                 values[j] = Math.Sqrt(Math.Pow(sineSp[j], 2) + Math.Pow(cosineSp[j], 2));
-                //if (val > 0 && val <= 5)
-                //    values[i] = val;
-                //else values[i] = 5;
-                //if (values[j] < 5 || values[j] > 8)
-                //{
-                //    if (values[j] < 5) values[j] = 4.9;
-                //    if (values[j] > 8) values[j] = 8;
-                //}
-                if (values[j] < 8 || values[j] > 150)
+                if (low)
                 {
-                    if (values[j] < 8) values[j] = 8;
-                    if (values[j] > 150) values[j] = 150;
+                    if (j > 0 && j <= highEdge)
+                    values[j] = values[j];
+                    else values[j] = 0;
                 }
-
+                if (high)
+                {
+                    if (j < lowEdge || j > 150)
+                    {
+                        if (j < lowEdge) values[j] = 0;
+                        if (j > 150) values[j] = values[j];
+                    }
+                }
+                if (line)
+                {
+                    if (j < lowEdge || j > highEdge)
+                    {
+                        if (j < lowEdge) values[j] = 0;
+                        if (j > highEdge) values[j] = 0;
+                    }
+                }
             }
             
             return values;

@@ -8,8 +8,8 @@ namespace LaboratoryWork1.Classes
 {
     class HarmonicSignal : Signal
     {
-        double A, f, phi;
-        public HarmonicSignal(double amplitude, double freq, double phase, int discrPoints)
+        double A, f, phi; 
+        public HarmonicSignal(double amplitude, double freq, double phase, int discrPoints, bool lowFr, bool highFr, bool lineFr, int highEdge, int lowEdge) : base(lowFr, highFr, lineFr, highEdge, lowEdge)
         {
             A = amplitude;
             n = discrPoints;
@@ -18,7 +18,7 @@ namespace LaboratoryWork1.Classes
             signal = GenerateSignal();
             sineSp = GetSineSpectrum();
             cosineSp = GetCosineSpectrum();
-            amplSp = GetAmplSpectrum();
+            amplSp = GetAmplSpectrum(lowFr, highFr, lineFr, highEdge, lowEdge);
             phaseSp = GetPhaseSpectrum();
             restSignal = RestoreSignal(0, numHarm);
             nfSignal = RestoreNFSignal();

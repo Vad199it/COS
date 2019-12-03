@@ -7,11 +7,7 @@
     <div class="text-center" style="display: flex;">
         <form method="post" asp-controller="Home" asp-action="Index" id="form" style="display: flex; flex-direction: column;  align-items: flex-start;">
             <div style="display: none;">
-                <label>
-                    M
-                    <input id="rangeM" type="range" name="m" min="0" max="1024" step="10" value="0" onchange="updateTextInputM(this.value)" />
-                    <input type="text" id="textInputM" value="0" onchange="GetRequest()" style="width: 70px" />
-                </label>
+
                 <label>Амплитуда 2<input type="number" step="0.1" name="amplitude2" value="0.5" id="amplitude2" onchange="GetRequest()" style="width: 70px" /></label>
                 <label>Амплитуда 3<input type="number" step="0.1" name="amplitude3" value="0.5" id="amplitude3" onchange="GetRequest()" style="width: 70px" /></label>
                 <label>Амплитуда 4<input type="number" step="0.1" name="amplitude4" value="0.5" id="amplitude4" onchange="GetRequest()" style="width: 70px" /></label>
@@ -46,6 +42,16 @@
             <label><input type="checkbox" name="lowfrequency" id="lowfrequency" onchange="GetRequest()" />Низкочастотная фильтрация</label>
             <label><input type="checkbox" name="highfrequency" id="highfrequency" onchange="GetRequest()" />Высокочастотная фильтрация</label>
             <label><input type="checkbox" name="linefrequency" id="linefrequency" onchange="GetRequest()" />Полосовая фильтрация</label>
+            <label>
+                Верхняя граница
+                <input id="rangeHighEdge" type="range" name="rangehighedge" min="0" max="150" step="1" value="0" onchange="updateTextInputHighEdge(this.value)" />
+                <input type="text" id="textInputHighEdge" value="0" onchange="GetRequest()" style="width: 70px" />
+            </label>
+            <label>
+                Нижняя граница
+                <input id="rangeLowEdge" type="range" name="rangelowedge" min="0" max="150" step="1" value="0" onchange="updateTextInputLowEdge(this.value)" />
+                <input type="text" id="textInputLowEdge" value="0" onchange="GetRequest()" style="width: 70px" />
+            </label>
         </form>
         <div style="display: flex; flex-direction: column;  align-items: flex-start;">
             <div style="width: 700px; height: 500px;" id="chart-container-1"></div>
@@ -58,6 +64,59 @@
         <script src="~/js/Chart.js"></script>
 
         <script>
+            var config7 = {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                label: '',
+                backgroundColor: "#FF0000",
+                borderColor: "#FF0000",
+                borderWidth: 0,
+                pointBackgroundColor: "#FF0000",
+                pointBorderColor: "#FF0000",
+                lineTension: 0,
+                fill: false,
+                data: []
+                    },
+                        {
+                label: '',
+                backgroundColor: "#008000",
+                borderColor: "#008000",
+                borderWidth: 0,
+                pointBackgroundColor: "#008000",
+                pointBorderColor: "#008000",
+                lineTension: 0,
+                fill: false,
+                data: []
+            }
+                    ]
+                },
+                options: {
+                    elements: {
+                        point: {
+                            radius: 0.5
+                        }
+                    },
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'Chart'
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                stepSize: 1,
+                            },
+                            display: true,
+                        }]
+                    }
+                }
+            }
+            
             var config = {
                 type: 'line',
                 data: {
@@ -110,8 +169,13 @@
                 GetRequest();
             }
 
-            function updateTextInputM(val) {
-                document.getElementById('textInputM').value = val;
+            function updateTextInputHighEdge(val) {
+                document.getElementById('textInputHighEdge').value = val;
+                GetRequest();
+            }
+
+            function updateTextInputLowEdge(val) {
+                document.getElementById('textInputLowEdge').value = val;
                 GetRequest();
             }
 
@@ -142,16 +206,18 @@
             function GetRequest() {
                 $.get("/Home/AxisX?n=" + $("#textInput").val(),
                     function (data) {                       
-                        config1.data.labels = data;
+                        config7.data.labels = data;
                         config2.data.labels = data;
                         config3.data.labels = data;
                         config4.data.labels = data;
                         config5.data.labels = data;
-                        $.get("/Home/AxisY?amplitude=" + $("#amplitude").val() + "&initialPhase=" + $("#initialphase").val() + "&frequency=" + $("#frequency").val() + "&n=" + $("#textInput").val() + "&radiobutton="+$("#form input[type='radio']:checked").val() + "&lowfrequency=" + $('#lowfrequency').prop('checked') + "&highfrequency=" + $('#highfrequency').prop('checked') + "&linefrequency=" + $('#linefrequency').prop('checked'),
+                        $.get("/Home/AxisY?amplitude=" + $("#amplitude").val() + "&initialPhase=" + $("#initialphase").val() + "&frequency=" + $("#frequency").val() + "&n=" + $("#textInput").val() + "&radiobutton="+$("#form input[type='radio']:checked").val() + "&lowfrequency=" + $('#lowfrequency').prop('checked') + "&highfrequency=" + $('#highfrequency').prop('checked') + "&linefrequency=" + $('#linefrequency').prop('checked') + "&rangehighedge=" + $("#textInputHighEdge").val() + "&rangelowedge=" + $("#textInputLowEdge").val() ,
                             function (data) {
                                 console.log(data);
 
-                                config1.data.datasets[0].data = data.item1;
+                                config7.data.datasets[0].data = data.item1;
+                                
+                                config7.data.datasets[1].data = data.item4;
 
                                 config2.data.datasets[0].data = data.item2;
 
@@ -161,7 +227,7 @@
 
                                 config5.data.datasets[0].data = data.item5;
                                 
-                                DrawChart(config1, 1);
+                                DrawChart(config7, 1);
                                 DrawChart(config2, 2);
                                 DrawChart(config3, 3);
                                 DrawChart(config4, 4);
