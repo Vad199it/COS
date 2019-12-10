@@ -1,0 +1,85 @@
+﻿@model LaboratoryWork1.ViewModels.Formula
+@{}
+
+    <div style="display: flex;">        
+        <div>
+            <label>Делитель<input type="number" step="1" name="divider" value="1" id="divider" style="width: 70px" /></label>
+            <label><input type="checkbox" name="substract" id="substract" />Substract From Source</label>
+            <div style="display: flex; flex-direction: row; justify-content: space-around; width: 150px; margin: 10px 0;">
+                <label><input type="radio" name="radio" value="3" checked onchange="RenderMatrix()" />3</label>
+                <label><input type="radio" name="radio" value="5" onchange="RenderMatrix()" />5</label>
+                <label><input type="radio" name="radio" value="7" onchange="RenderMatrix()" />7</label>
+            </div>
+            <div style="display: flex; flex-direction: row; justify-content: space-around; margin: 10px 0;">
+                <button onclick="InputMatrix1()">Размытие</button>
+                <button onclick="InputMatrix2()">Резкость</button>
+                <button onclick="InputMatrix3()">Выделение границ</button>
+            </div>
+            <div id="matrix" style="margin: 10px 0;"></div>
+            <button onclick="Convertion()">Применить</button>
+        </div>
+        <div style="display: grid; margin: 0 10px">
+            <label><input type="radio" name="radio1" value="0" checked />А</label>
+            <label><input type="radio" name="radio1" value="1" />Б</label>
+            <label><input type="radio" name="radio1" value="2" />В</label>
+            <label><input type="radio" name="radio1" value="3" />Г</label>
+        </div>
+        <div id="images" style="width: 900px; display: flex; flex-flow: wrap;">
+            <img src="~/images/image.jpg" width="300" />
+        </div>
+        
+            <script>
+                window.onload = () => RenderMatrix();
+
+                function InputMatrix1() {
+                    let matrix = [1, 2, 1, 2, 3, 2, 1, 2, 1];
+                    for (let i = 1; i <= 9; i++) {
+                        let input = document.getElementById('input' + i);
+                        input.value = matrix[i - 1];
+                    }
+                }
+
+                function InputMatrix2() {
+                    let matrix = [-1, -2, -1, -2, 22, -2, -1, -2, -1];
+                    for (let i = 1; i <= 9; i++) {
+                        let input = document.getElementById('input' + i);
+                        input.value = matrix[i - 1];
+                    }
+                }
+
+                function InputMatrix3() {
+                    let matrix = [0, -1, 0, -1, -4, -1, 0, -1, 0];
+                    for (let i = 1; i <= 9; i++) {
+                        let input = document.getElementById('input' + i);
+                        input.value = matrix[i - 1];
+                    }
+                }
+
+                function RenderMatrix() {
+                    let matrixContainer = document.getElementById('matrix');
+                    matrixContainer.style.width = $("input[name='radio']:checked").val() * 30 + 'px';
+                    matrixContainer.innerHTML = '';
+                        for (let i = 1; i <= $("input[name='radio']:checked").val() * $("input[name='radio']:checked").val(); i++) {
+                            let input = document.createElement('input');
+                            input.id = 'input' + i;
+                            input.name = 'input';
+                            input.style.width = '30px';
+                            matrixContainer.appendChild(input);
+                        }                   
+                }
+
+                function Convertion() {
+                    let requestString = "/Home/Convertion?divider=" + $("#divider").val() + "&radio1=" + $("input[name='radio1']:checked").val() + "&radio=" + $("input[name='radio']:checked").val() + "&substract=" + $('#substract').prop('checked');
+                    for (let i = 1; i <= $("input[name='radio']:checked").val() * $("input[name='radio']:checked").val(); i++) {
+                        let temp = "&inputs["+(i-1)+"]=" + $("#input" + i).val();
+                        requestString += temp;
+                    }
+                    $.get(requestString, function () {
+                        let resultImage = document.createElement('img');
+                        resultImage.width = 300;
+                        resultImage.src = "/images/result.jpg";
+                        document.getElementById('images').appendChild(resultImage);
+                    })
+                }
+            </script>
+    </div>

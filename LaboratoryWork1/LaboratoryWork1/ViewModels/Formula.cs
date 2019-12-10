@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,18 +9,17 @@ namespace LaboratoryWork1.ViewModels
 {
     public class Formula
     {
-        public double Frequency { get; set; }
-        public double InitialPhase { get; set; }
-        public double Amplitude { get; set; }
+        public double B1 { get; set; }
+        public double B2 { get; set; }
         public int N { get; set; }
-        public int M { get; set; }
-        public bool Noise { get; set; }
-        public bool Line { get; set; }
-        public int RadioButton { get; set; }
-        public bool LowFrequency { get; set; }
-        public bool HighFrequency { get; set; }
-        public bool LineFrequency { get; set; }
-        public int RangeHighEdge { get; set; }
-        public int RangeLowEdge { get; set; }
-    }
+        public bool Check1 { get; set; }
+        public bool Check2 { get; set; }
+        public bool Check3 { get; set; }
+        public IFormFile Photo { get; set; }
+        public int Divider { get; set; }
+        public int[] Inputs { get; set; }
+        public int Radio1 { get; set; }
+        public int Radio { get; set; }
+        public bool Substract { get; set; }
+    }    
 }

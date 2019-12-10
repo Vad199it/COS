@@ -64,3 +64,4 @@ F:\Универ\7 семестр\ЦОС\COS\LaboratoryWork1\LaboratoryWork1\obj\
 F:\Универ\7 семестр\ЦОС\COS\LaboratoryWork1\LaboratoryWork1\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
 F:\Универ\7 семестр\ЦОС\COS\LaboratoryWork1\LaboratoryWork1\obj\Debug\netcoreapp2.2\Razor\Views\_ViewImports.cshtml.g.cs
 F:\Универ\7 семестр\ЦОС\COS\LaboratoryWork1\LaboratoryWork1\obj\Debug\netcoreapp2.2\Razor\Views\_ViewStart.cshtml.g.cs
+F:\Универ\7 семестр\ЦОС\COS\LaboratoryWork1\LaboratoryWork1\obj\Debug\netcoreapp2.2\Razor\Views\Home\ImageLoading.cshtml.g.cs

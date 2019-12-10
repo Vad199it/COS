@@ -4,118 +4,93 @@
     ViewData["Title"] = "Home Page";
 }
 
-    <div class="text-center" style="display: flex;">
-        <form method="post" asp-controller="Home" asp-action="Index" id="form" style="display: flex; flex-direction: column;  align-items: flex-start;">
-            <div style="display: none;">
-
-                <label>Амплитуда 2<input type="number" step="0.1" name="amplitude2" value="0.5" id="amplitude2" onchange="GetRequest()" style="width: 70px" /></label>
-                <label>Амплитуда 3<input type="number" step="0.1" name="amplitude3" value="0.5" id="amplitude3" onchange="GetRequest()" style="width: 70px" /></label>
-                <label>Амплитуда 4<input type="number" step="0.1" name="amplitude4" value="0.5" id="amplitude4" onchange="GetRequest()" style="width: 70px" /></label>
-                <label>Частота 1<input type="number" step="0.1" name="frequency1" value="1" id="frequency1" onchange="GetRequest()" style="width: 70px" /></label>
-                <label>Частота 2<input type="number" step="0.1" name="frequency2" value="1" id="frequency2" onchange="GetRequest()" style="width: 70px" /></label>
-                <label>Частота 3<input type="number" step="0.1" name="frequency3" value="1" id="frequency3" onchange="GetRequest()" style="width: 70px" /></label>
-                <label>Частота 4<input type="number" step="0.1" name="frequency4" value="1" id="frequency4" onchange="GetRequest()" style="width: 70px" /></label>
-
-                <label><input type="checkbox" name="amplitudem" id="amplitudem" onchange="GetRequest()" />Амплитудная модуляция</label>
-                <div style="display: flex; flex-direction: column; align-items: flex-start;">
-                    <label><input type="radio" name="radio" value="1" checked onchange="GetRequest()" />Синусоида</label>
-                    <label><input type="radio" name="radio" value="5" onchange="GetRequest()" />Пилообразный</label>
-                    <label><input type="radio" name="radio" value="3" onchange="GetRequest()" />Квадратичный</label>
-                    <label><input type="radio" name="radio" value="4" onchange="GetRequest()" />Треугольный</label>
-                    <label><input type="radio" name="radio" value="6" onchange="GetRequest()" />Синусоида + Квадратичный</label>
-                    <label><input type="radio" name="radio" value="7" onchange="GetRequest()" />Квадратичный + Треугольный</label>
-                    <label><input type="radio" name="radio" value="8" onchange="GetRequest()" />Треугольный + Пилообразный</label>
-                    <label><input type="radio" name="radio" value="9" onchange="GetRequest()" />Пилообразный + Синусоида</label>
+    <div class="text-center" style="display: flex; flex-direction: column;">
+        <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="ImageLoading" style="width: 300px;">
+            <div class="form-group" style="display: flex; flex-direction: row !important;">
+                <label asp-for="Photo"></label>
+                <div class="col-sm-10">
+                    <div class="custom-file">
+                        <input asp-for="Photo" class="form-control custom-file-input" />
+                        <label class="custom-file-label" style="display: flex; justify-content: flex-start;">Choose File...</label>
+                    </div>
                 </div>
+                <button type="submit" name="button" class="btn btn-primary">Start</button>
             </div>
-            <label>Амплитуда 1<input type="number" step="0.1" name="amplitude" value="10" id="amplitude" onchange="GetRequest()" style="width: 70px" /></label>
-            <label>Частота 1<input type="number" step="0.1" name="frequency" value="10" id="frequency" onchange="GetRequest()" style="width: 70px" /></label>
-            <label>Начальная фаза<input type="number" step="0.1" name="initialPhase" value="0" id="initialphase" onchange="GetRequest()" style="width: 70px" /></label>
-            <label>
-                N
-                <input id="range" type="range" name="n" min="256" max="2048" step="256" value="256" onchange="updateTextInput(this.value)" />
-                <input type="text" id="textInput" value="256" onchange="GetRequest()" style="width: 70px" />
-            </label>
-            <label><input type="radio" name="radio" value="1" checked onchange="GetRequest()" />Гармонический</label>
-            <label><input type="radio" name="radio" value="2" onchange="GetRequest()" />Полигармонический</label>
-            <label><input type="radio" name="radio" value="3" onchange="GetRequest()" />Полигармонический (быстрое Фурье)</label>
-            <label><input type="checkbox" name="lowfrequency" id="lowfrequency" onchange="GetRequest()" />Низкочастотная фильтрация</label>
-            <label><input type="checkbox" name="highfrequency" id="highfrequency" onchange="GetRequest()" />Высокочастотная фильтрация</label>
-            <label><input type="checkbox" name="linefrequency" id="linefrequency" onchange="GetRequest()" />Полосовая фильтрация</label>
-            <label>
-                Верхняя граница
-                <input id="rangeHighEdge" type="range" name="rangehighedge" min="0" max="150" step="1" value="0" onchange="updateTextInputHighEdge(this.value)" />
-                <input type="text" id="textInputHighEdge" value="0" onchange="GetRequest()" style="width: 70px" />
-            </label>
-            <label>
-                Нижняя граница
-                <input id="rangeLowEdge" type="range" name="rangelowedge" min="0" max="150" step="1" value="0" onchange="updateTextInputLowEdge(this.value)" />
-                <input type="text" id="textInputLowEdge" value="0" onchange="GetRequest()" style="width: 70px" />
-            </label>
-        </form>
-        <div style="display: flex; flex-direction: column;  align-items: flex-start;">
-            <div style="width: 700px; height: 500px;" id="chart-container-1"></div>
-            <div style="width: 700px; height: 500px;" id="chart-container-2"></div>
-            <div style="width: 700px; height: 500px;" id="chart-container-3"></div>
-            <div style="width: 700px; height: 500px;" id="chart-container-4"></div>
-            <div style="width: 700px; height: 500px;" id="chart-container-5"></div>
+        </form> 
+        <div style="display: flex;">
+            <form method="post" asp-controller="Home" asp-action="Index" id="form" style="display: flex; flex-direction: column;  align-items: flex-start;">
+
+
+                <div style="display: none;">
+
+                    <label>Амплитуда 2<input type="number" step="0.1" name="amplitude2" value="0.5" id="amplitude2" onchange="GetRequest()" style="width: 70px" /></label>
+                    <label>Амплитуда 3<input type="number" step="0.1" name="amplitude3" value="0.5" id="amplitude3" onchange="GetRequest()" style="width: 70px" /></label>
+                    <label>Амплитуда 4<input type="number" step="0.1" name="amplitude4" value="0.5" id="amplitude4" onchange="GetRequest()" style="width: 70px" /></label>
+                    <label>Частота 1<input type="number" step="0.1" name="frequency1" value="1" id="frequency1" onchange="GetRequest()" style="width: 70px" /></label>
+                    <label>Частота 2<input type="number" step="0.1" name="frequency2" value="1" id="frequency2" onchange="GetRequest()" style="width: 70px" /></label>
+                    <label>Частота 3<input type="number" step="0.1" name="frequency3" value="1" id="frequency3" onchange="GetRequest()" style="width: 70px" /></label>
+                    <label>Частота 4<input type="number" step="0.1" name="frequency4" value="1" id="frequency4" onchange="GetRequest()" style="width: 70px" /></label>
+
+                    <label><input type="checkbox" name="amplitudem" id="amplitudem" onchange="GetRequest()" />Амплитудная модуляция</label>
+                    <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                        <label><input type="radio" name="radio" value="1" checked onchange="GetRequest()" />Синусоида</label>
+                        <label><input type="radio" name="radio" value="5" onchange="GetRequest()" />Пилообразный</label>
+                        <label><input type="radio" name="radio" value="3" onchange="GetRequest()" />Квадратичный</label>
+                        <label><input type="radio" name="radio" value="4" onchange="GetRequest()" />Треугольный</label>
+                        <label><input type="radio" name="radio" value="6" onchange="GetRequest()" />Синусоида + Квадратичный</label>
+                        <label><input type="radio" name="radio" value="7" onchange="GetRequest()" />Квадратичный + Треугольный</label>
+                        <label><input type="radio" name="radio" value="8" onchange="GetRequest()" />Треугольный + Пилообразный</label>
+                        <label><input type="radio" name="radio" value="9" onchange="GetRequest()" />Пилообразный + Синусоида</label>
+                        <label>Начальная фаза<input type="number" step="0.1" name="initialPhase" value="0" id="initialphase" onchange="GetRequest()" style="width: 70px" /></label>
+                    </div>
+                    <label>
+                        Верхняя граница
+                        <input id="rangeHighEdge" type="range" name="rangehighedge" min="0" max="150" step="1" value="0" onchange="updateTextInputHighEdge(this.value)" />
+                        <input type="text" id="textInputHighEdge" value="0" onchange="GetRequest()" style="width: 70px" />
+                    </label>
+                    <label>
+                        Нижняя граница
+                        <input id="rangeLowEdge" type="range" name="rangelowedge" min="0" max="150" step="1" value="0" onchange="updateTextInputLowEdge(this.value)" />
+                        <input type="text" id="textInputLowEdge" value="0" onchange="GetRequest()" style="width: 70px" />
+                    </label>
+                    <label><input type="radio" name="radio" value="1" checked onchange="GetRequest()" />Гармонический</label>
+                    <label><input type="radio" name="radio" value="2" onchange="GetRequest()" />Полигармонический</label>
+                    <label><input type="radio" name="radio" value="3" onchange="GetRequest()" />Полигармонический (быстрое Фурье)</label>
+                </div>
+
+                <label>B1<input type="number" step="0.1" name="b1" value="50" id="b1" onchange="GetRequest()" style="width: 70px" /></label>
+                <label>B2<input type="number" step="0.1" name="b2" value="1" id="b2" onchange="GetRequest()" style="width: 70px" /></label>
+                <label>
+                    N
+                    <input id="range" type="range" name="n" min="256" max="2048" step="256" value="512" onchange="updateTextInput(this.value)" />
+                    <input type="text" id="textInput" value="512" onchange="GetRequest()" style="width: 70px" />
+                </label>
+                <label><input type="checkbox" name="check1" id="check1" checked onchange="GetRequest()" />Скользящее усреднение</label>
+                <label><input type="checkbox" name="check2" id="check2" onchange="GetRequest()" />Парабола 4 степени</label>
+                <label><input type="checkbox" name="check3" id="check3" onchange="GetRequest()" />Фильтрация медианой</label>
+                @section Scripts {
+                    <script>
+                        $(document).ready(function () {
+                            $('.custom-file-input').on("change", function () {
+                                var fileName = $(this).val().split("\\").pop();
+                                $(this).next('.custom-file-label').html(fileName);
+                            })
+                        });
+                    </script>
+                }
+            </form>
+            <div style="display: flex; flex-direction: column;  align-items: flex-start;">
+                <div style="width: 700px; height: 500px;" id="chart-container-1"></div>
+                <div style="width: 700px; height: 500px;" id="chart-container-2"></div>
+                <div style="width: 700px; height: 500px;" id="chart-container-3"></div>
+                <div style="width: 700px; height: 500px;" id="chart-container-4"></div>
+                <div style="width: 700px; height: 500px;" id="chart-container-5"></div>
+                <div style="width: 700px; height: 500px;" id="chart-container-6"></div>
+            </div>
         </div>
-        
         <script src="~/js/Chart.js"></script>
 
         <script>
-            var config7 = {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [{
-                label: '',
-                backgroundColor: "#FF0000",
-                borderColor: "#FF0000",
-                borderWidth: 0,
-                pointBackgroundColor: "#FF0000",
-                pointBorderColor: "#FF0000",
-                lineTension: 0,
-                fill: false,
-                data: []
-                    },
-                        {
-                label: '',
-                backgroundColor: "#008000",
-                borderColor: "#008000",
-                borderWidth: 0,
-                pointBackgroundColor: "#008000",
-                pointBorderColor: "#008000",
-                lineTension: 0,
-                fill: false,
-                data: []
-            }
-                    ]
-                },
-                options: {
-                    elements: {
-                        point: {
-                            radius: 0.5
-                        }
-                    },
-                    responsive: true,
-                    title: {
-                        display: false,
-                        text: 'Chart'
-                    },
-                    scales: {
-                        xAxes: [{
-                            display: true,
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                stepSize: 1,
-                            },
-                            display: true,
-                        }]
-                    }
-                }
-            }
             
             var config = {
                 type: 'line',
@@ -157,12 +132,14 @@
                     }
                 }
             };
+
             var config1 = JSON.parse(JSON.stringify(config));
             var config2 = JSON.parse(JSON.stringify(config));
             var config3 = JSON.parse(JSON.stringify(config));
             var config4 = JSON.parse(JSON.stringify(config));
             var config5 = JSON.parse(JSON.stringify(config));
-            
+            var config6 = JSON.parse(JSON.stringify(config));
+
             window.onload = () => GetRequest();
             function updateTextInput(val) {
                 document.getElementById('textInput').value = val;
@@ -205,38 +182,33 @@
 
             function GetRequest() {
                 $.get("/Home/AxisX?n=" + $("#textInput").val(),
-                    function (data) {                       
-                        config7.data.labels = data;
+                    function (data) {
+                        config1.data.labels = data;
                         config2.data.labels = data;
                         config3.data.labels = data;
                         config4.data.labels = data;
                         config5.data.labels = data;
-                        $.get("/Home/AxisY?amplitude=" + $("#amplitude").val() + "&initialPhase=" + $("#initialphase").val() + "&frequency=" + $("#frequency").val() + "&n=" + $("#textInput").val() + "&radiobutton="+$("#form input[type='radio']:checked").val() + "&lowfrequency=" + $('#lowfrequency').prop('checked') + "&highfrequency=" + $('#highfrequency').prop('checked') + "&linefrequency=" + $('#linefrequency').prop('checked') + "&rangehighedge=" + $("#textInputHighEdge").val() + "&rangelowedge=" + $("#textInputLowEdge").val() ,
+                        config6.data.labels = data;
+                        $.get("/Home/AxisY?b1=" + $("#b1").val() + "&b2=" + $("#b2").val() + "&n=" + $("#textInput").val() + "&check1=" + $('#check1').prop('checked') + "&check2=" + $('#check2').prop('checked') + "&check3=" + $('#check3').prop('checked'),
                             function (data) {
-                                console.log(data);
-
-                                config7.data.datasets[0].data = data.item1;
-                                
-                                config7.data.datasets[1].data = data.item4;
-
+                                config1.data.datasets[0].data = data.item1;
                                 config2.data.datasets[0].data = data.item2;
-
                                 config3.data.datasets[0].data = data.item3;
-
                                 config4.data.datasets[0].data = data.item4;
-
                                 config5.data.datasets[0].data = data.item5;
-                                
-                                DrawChart(config7, 1);
+                                config6.data.datasets[0].data = data.item6;
+
+                                DrawChart(config1, 1);
                                 DrawChart(config2, 2);
                                 DrawChart(config3, 3);
                                 DrawChart(config4, 4);
                                 DrawChart(config5, 5);
+                                DrawChart(config6, 6);
                             }
                         );
-                       
-                        
-                       
+
+
+
                     });
 
             }
